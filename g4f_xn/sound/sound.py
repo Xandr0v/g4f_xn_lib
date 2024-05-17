@@ -1,7 +1,10 @@
-METAL_PIPE = 'g4f_xn/sound/metal-pipe.wav'
-COINS = 'g4f_xn/sound/coins.wav'
-HINT = 'g4f_xn/sound/Hint.wav'
+import os
 RAND_SOUND_KWARGS = {'add_vol': (-25, -21), 'speed': (0.9, 1.1), 'pause': (0.2, 0.6)}
+_sound_path = os.path.dirname(__file__)
+METAL_PIPE = fr'{_sound_path}\metal-pipe.wav'
+COINS = fr'{_sound_path}\coins.wav'
+HINT = fr'{_sound_path}\Hint.wav'
+
 
 
 def _speed_change(sound, speed):
@@ -12,8 +15,10 @@ def _speed_change(sound, speed):
 
 
 def _sound_one(src, add_vol=0, speed=1.0, reverse=False):
-    from pydub import AudioSegment
-    from pydub.playback import play
+    import warnings
+    with warnings.catch_warnings(action='ignore'):
+        from pydub import AudioSegment
+        from pydub.playback import play
     s = AudioSegment.from_wav(src) + add_vol
     s = _speed_change(s, speed)
     if reverse:
@@ -50,7 +55,8 @@ def sound(src=HINT,
 
 
 def secret():
-    from ..test_providers import (gr, d)
+
+    from  ..test_providers import (gr, d)
 
     print(f'{gr}Su', end='')
     sound(COINS, **RAND_SOUND_KWARGS)
